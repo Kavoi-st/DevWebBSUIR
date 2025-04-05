@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 20px 0;
+}
+
+#mainHeader {
+    font-size: 24px; 
+    color: white; 
+    transition: font-size 0.3s ease, color 0.3s ease; 
+}
+
+#mainHeader:hover {
+    font-size: 32px; 
+    color: #ff6347; 
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+}
+
+section {
+    margin: 20px;
+}
+
+select {
+    padding: 10px;
+    font-size: 16px;
+}
+
+img {
+    width: 500px;
+    height: auto;
+    margin-top: 20px;
+}
+
+#showAllImagesButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+#textInput {
+    padding: 10px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+#addToListButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
