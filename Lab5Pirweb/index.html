@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление заводскими цехами</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        .form-section {
+            background: #e6f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #007bff;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        select, input {
+            padding: 6px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-section">
+        <h2>Данные цеха</h2>
+        <form id="workshopForm">
+            <input type="text" id="name" placeholder="Название цеха" required><br>
+            <input type="email" id="email" placeholder="Email начальника" required><br>
+            <input type="text" id="product" placeholder="Вид продукции" required><br>
+            <input type="number" id="employees" placeholder="Количество сотрудников" required><br>
+            
+            <select id="existingWorkshops"></select>
+            
+            <button type="button" onclick="addWorkshop()">Добавить запись</button>
+            <button type="button" onclick="clearForm()">Очистить форму</button>
+            <button type="button" onclick="deleteWorkshop()">Удалить запись</button>
+            <button type="button" onclick="showEmails()">Показать emails</button>
+        </form>
+    </div>
+
+    <div class="form-section">
+        <h2>Дополнительные свойства</h2>
+        <select id="newPropertySelect">
+            <option value="address">Адрес</option>
+            <option value="phone">Телефон</option>
+            <option value="rating">Рейтинг</option>
+        </select>
+        <input type="text" id="newPropertyValue" placeholder="Значение">
+        <button onclick="addProperty()">Добавить свойство</button>
+    </div>
+
+    <table id="workshopTable">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Email начальника</th>
+                <th>Вид продукции</th>
+                <th>Сотрудники</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        // Объект для хранения данных
+        const WorkshopManager = {
+            workshops: JSON.parse(localStorage.getItem('workshops')) || [],
+            
+            addWorkshop(workshop) {
+                this.workshops.push(workshop);
+                this.updateStorage();
+            },
+
+            deleteWorkshop(id) {
+                this.workshops = this.workshops.filter(w => w.id !== id);
+                this.updateStorage();
+            },
+
+            updateStorage() {
+                localStorage.setItem('workshops', JSON.stringify(this.workshops));
+            },
+
+            renderTable() {
+                const tbody = document.querySelector('#workshopTable tbody');
+                tbody.innerHTML = this.workshops.map(workshop => `
+                    <tr>
+                        <td>${workshop.name}</td>
+                        <td>${workshop.email}</td>
+                        <td>${workshop.product}</td>
+                        <td>${workshop.employees}</td>
+                    </tr>
+                `).join('');
+            },
+
+            // Методы для работы с дополнительными свойствами
+            addPropertyToAll(key, value) {
+                this.workshops = this.workshops.map(w => ({...w, [key]: value}));
+                this.updateStorage();
+            },
+
+            removeProperty(key) {
+                this.workshops = this.workshops.map(w => {
+                    delete w[key];
+                    return w;
+                });
+                this.updateStorage();
+            }
+        };
+
+        // Инициализация
+        function init() {
+            WorkshopManager.renderTable();
+            updateSelect();
+        }
+
+        // Обновление выпадающего списка
+        function updateSelect() {
+            const select = document.getElementById('existingWorkshops');
+            select.innerHTML = WorkshopManager.workshops
+                .map(w => `<option value="${w.id}">${w.name}</option>`)
+                .join('');
+        }
+
+        // Обработчики событий
+        function addWorkshop() {
+            const workshop = {
+                id: Date.now(),
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                product: document.getElementById('product').value,
+                employees: document.getElementById('employees').value
+            };
+            
+            WorkshopManager.addWorkshop(workshop);
+            WorkshopManager.renderTable();
+            updateSelect();
+        }
+
+        function deleteWorkshop() {
+            const id = parseInt(document.getElementById('existingWorkshops').value);
+            WorkshopManager.deleteWorkshop(id);
+            WorkshopManager.renderTable();
+            updateSelect();
+        }
+
+        function showEmails() {
+            const product = prompt('Введите вид продукции:');
+            const emails = WorkshopManager.workshops
+                .filter(w => w.product === product)
+                .map(w => w.email)
+                .join(', ');
+            
+            if (emails) alert(`Emails: ${emails}`);
+            else alert('Нет данных');
+        }
+
+        function addProperty() {
+            const key = document.getElementById('newPropertySelect').value;
+            const value = document.getElementById('newPropertyValue').value;
+            WorkshopManager.addPropertyToAll(key, value);
+            WorkshopManager.renderTable();
+        }
+
+        function clearForm() {
+            document.getElementById('workshopForm').reset();
+        }
+
+        // Запуск при загрузке
+        window.onload = init;
+    </script>
+</body>
+</html>
