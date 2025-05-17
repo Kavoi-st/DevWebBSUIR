@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Динамическая загрузка данных</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <h1>Галерея блоков</h1>
+
+  <div id="controls">
+    <label for="blockSelector">Выберите блок:</label>
+    <select id="blockSelector"></select>
+
+    <label for="colorFilter">Фильтр по цвету:</label>
+    <select id="colorFilter">
+      <option value="all">Все</option>
+    </select>
+
+    <label for="sizeFilter">Фильтр по размеру:</label>
+    <select id="sizeFilter">
+      <option value="all">Все</option>
+      <option value="small">Маленькие</option>
+      <option value="medium">Средние</option>
+      <option value="large">Большие</option>
+    </select>
+
+    <button id="addBlockBtn">Добавить случайный блок</button>
+  </div>
+
+  <div id="container"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

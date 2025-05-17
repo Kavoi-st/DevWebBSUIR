@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обработка имен</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/client.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Введите список имен</h1>
+        <form id="namesForm">
+            <textarea id="namesInput" placeholder="Введите имена, каждое с новой строки"></textarea>
+            <button type="submit" class="custom-btn">Обработать и сохранить</button>
+        </form>
+        <div id="originalList" class="names-container hidden">
+            <h3>Исходный список:</h3>
+            <ul id="originalNames"></ul>
+        </div>
+        <a href="/result" id="resultLink" class="custom-btn hidden">Показать результат</a>
+    </div>
+</body>
+</html>
